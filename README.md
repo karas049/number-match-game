@@ -26,3 +26,8 @@ To run the game:
 
 ## 📜 License
 This project is open-source and available under the MIT License.
+
+## sound Effects
+https://pixabay.com/sound-effects/search/game-over/
+https://pixabay.com/sound-effects/search/correct/
+https://pixabay.com/sound-effects/search/fail/
