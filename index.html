@@ -92,6 +92,18 @@
             }, 1000);
         }
 
+        function resetGame() {
+            document.getElementById("gameScreen").style.display = "none";
+            document.getElementById("startScreen").style.display = "block";
+            score = 0;
+            lives = 10;
+            level = 1;
+            timeElapsed = 0;
+            selectedButtons = [];
+            clearInterval(timer);
+            updateInfo();
+        }
+
         function checkMatch(btn) {
             if (btn.classList.contains("matched") || selectedButtons.includes(btn)) return;
             if (selectedButtons.length < 2) {
