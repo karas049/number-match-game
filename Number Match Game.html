@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Match Game</title>
+    <style>
+        body { background-color: #1e1e1e; color: white; text-align: center; font-family: 'Poppins', sans-serif; }
+        #gameScreen { display: none; }
+        .grid { display: grid; grid-template-columns: repeat(4, 100px); gap: 15px; justify-content: center; padding: 20px; }
+        .grid button { 
+            width: 100px; height: 100px; font-size: 24px; 
+            background: linear-gradient(145deg, #2a2a2a, #3a3a3a); 
+            color: white; border: none; cursor: pointer; 
+            border-radius: 12px; transition: all 0.3s ease-in-out;
+            box-shadow: 3px 3px 6px #111, -3px -3px 6px #333;
+        }
+        .grid button:hover {
+            background: linear-gradient(145deg, #3a3a3a, #4a4a4a);
+        }
+        .info { margin: 20px; font-size: 22px; font-weight: bold; }
+        .hidden { background: #444; color: white; }
+        .matched { visibility: hidden; }
+        .selected { background: #ffcc00 !important; color: white !important; }
+        .btn-modern {
+            background-color: #0078ff; color: white; padding: 15px 30px;
+            font-size: 20px; border: none; border-radius: 8px;
+            transition: background 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .btn-modern:hover {
+            background-color: #005bb5;
+        }
+    </style>
+</head>
+<body>
+    <div id="startScreen">
+        <h1>Number Match Game</h1>
+        <button class="btn-modern" onclick="startGame()">Start Game</button>
+        <p id="lastScores">Last Scores: 0, 0, 0</p>
+    </div>
+
+    <div id="gameScreen">
+        <div class="info">
+            Score: <span id="score">0</span> | Lives: <span id="lives">10</span> | Level: <span id="level">1</span> | Time: <span id="time">0</span>s
+        </div>
+        <div class="grid" id="grid"></div>
+        <button class="btn-modern" onclick="resetGame()">Back to Start</button>
+    </div>
+
+    <script>
+        let score = 0, lives = 10, level = 1, timeElapsed = 0, timer;
+        let selectedButtons = [], lastScores = [0, 0, 0];
+        
+        function startGame() {
+            document.getElementById("startScreen").style.display = "none";
+            document.getElementById("gameScreen").style.display = "block";
+            resetGameGrid();
+            startTimer();
+        }
+
+        function resetGameGrid() {
+            const grid = document.getElementById("grid");
+            grid.innerHTML = "";
+            let numbers = [...Array(8).keys()].map(n => (n + level * 8)).flatMap(n => [n, n]);
+            numbers.sort(() => Math.random() - 0.5);
+            numbers.forEach(num => {
+                let btn = document.createElement("button");
+                btn.innerText = num;
+                btn.classList.add("hidden");
+                btn.onclick = () => checkMatch(btn);
+                grid.appendChild(btn);
+            });
+        }
+        
+        function startTimer() {
+            timeElapsed = 0;
+            document.getElementById("time").innerText = timeElapsed;
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeElapsed++;
+                document.getElementById("time").innerText = timeElapsed;
+            }, 1000);
+        }
+
+        function checkMatch(btn) {
+            if (btn.classList.contains("matched")) return;
+            if (selectedButtons.length < 2) {
+                btn.classList.remove("hidden");
+                btn.classList.add("selected");
+                selectedButtons.push(btn);
+                if (selectedButtons.length === 2) {
+                    compareNumbers();
+                }
+            }
+        }
+
+        function compareNumbers() {
+            if (selectedButtons[0].innerText === selectedButtons[1].innerText) {
+                selectedButtons.forEach(btn => btn.classList.add("matched"));
+                score += 10;
+            } else {
+                setTimeout(() => {
+                    selectedButtons.forEach(btn => {
+                        btn.classList.remove("selected");
+                        btn.classList.add("hidden");
+                    });
+                }, 300);
+                lives--;
+                if (lives === 0) {
+                    alert("Game Over!");
+                    resetGame();
+                    return;
+                }
+            }
+            selectedButtons = [];
+            updateInfo();
+            if (document.querySelectorAll(".matched").length === 16) {
+                alert(`Level ${level} Cleared!`);
+                level++;
+                resetGameGrid();
+            }
+        }
+
+        function updateInfo() {
+            document.getElementById("score").innerText = score;
+            document.getElementById("lives").innerText = lives;
+            document.getElementById("level").innerText = level;
+        }
+
+        function resetGame() {
+            lastScores.push(score);
+            lastScores = lastScores.slice(-3);
+            document.getElementById("lastScores").innerText = "Last Scores: " + lastScores.join(", ");
+            score = 0; lives = 10; level = 1;
+            updateInfo();
+            document.getElementById("startScreen").style.display = "block";
+            document.getElementById("gameScreen").style.display = "none";
+            clearInterval(timer);
+        }
+    </script>
+</body>
+</html>
