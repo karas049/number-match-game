@@ -37,6 +37,7 @@
     <audio id="correctSound" src="correct.mp3"></audio>
     <audio id="wrongSound" src="wrong.mp3"></audio>
     <audio id="gameOverSound" src="gameover.mp3"></audio>
+    <audio id="levelClearSound" src="clear1.mp3"></audio>
 
     <div id="startScreen">
         <h1>Number Match Game</h1>
@@ -104,6 +105,12 @@
         }
 
         function compareNumbers() {
+            if (selectedButtons[0] === selectedButtons[1]) {
+                selectedButtons.forEach(btn => btn.classList.remove("selected"));
+                selectedButtons = [];
+                return;
+            }
+
             if (selectedButtons[0].innerText === selectedButtons[1].innerText) {
                 playSound("correctSound");
                 selectedButtons.forEach(btn => btn.classList.add("matched"));
@@ -127,6 +134,7 @@
             selectedButtons = [];
             updateInfo();
             if (document.querySelectorAll(".matched").length === 16) {
+                playSound("levelClearSound");
                 alert(`Level ${level} Cleared!`);
                 level++;
                 resetGameGrid();
