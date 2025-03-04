@@ -93,36 +93,28 @@
         }
 
         function checkMatch(btn) {
-            if (btn.classList.contains("matched")) return;
+            if (btn.classList.contains("matched") || selectedButtons.includes(btn)) return;
             if (selectedButtons.length < 2) {
                 btn.classList.remove("hidden");
                 btn.classList.add("selected");
                 selectedButtons.push(btn);
                 if (selectedButtons.length === 2) {
-                    compareNumbers();
+                    setTimeout(compareNumbers, 500);
                 }
             }
         }
 
         function compareNumbers() {
-            if (selectedButtons[0] === selectedButtons[1]) {
-                selectedButtons.forEach(btn => btn.classList.remove("selected"));
-                selectedButtons = [];
-                return;
-            }
-
             if (selectedButtons[0].innerText === selectedButtons[1].innerText) {
                 playSound("correctSound");
                 selectedButtons.forEach(btn => btn.classList.add("matched"));
                 score += 10;
             } else {
                 playSound("wrongSound");
-                setTimeout(() => {
-                    selectedButtons.forEach(btn => {
-                        btn.classList.remove("selected");
-                        btn.classList.add("hidden");
-                    });
-                }, 300);
+                selectedButtons.forEach(btn => {
+                    btn.classList.remove("selected");
+                    btn.classList.add("hidden");
+                });
                 lives--;
                 if (lives === 0) {
                     playSound("gameOverSound");
@@ -135,9 +127,11 @@
             updateInfo();
             if (document.querySelectorAll(".matched").length === 16) {
                 playSound("levelClearSound");
-                alert(`Level ${level} Cleared!`);
-                level++;
-                resetGameGrid();
+                setTimeout(() => {
+                    alert(`Level ${level} Cleared!`);
+                    level++;
+                    resetGameGrid();
+                }, 500);
             }
         }
 
