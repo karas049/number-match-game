@@ -34,6 +34,10 @@
     </style>
 </head>
 <body>
+    <audio id="correctSound" src="sounds/correct.mp3"></audio>
+    <audio id="wrongSound" src="sounds/wrong.mp3"></audio>
+    <audio id="gameOverSound" src="sounds/gameover.mp3"></audio>
+
     <div id="startScreen">
         <h1>Number Match Game</h1>
         <button class="btn-modern" onclick="startGame()">Start Game</button>
@@ -51,6 +55,10 @@
     <script>
         let score = 0, lives = 10, level = 1, timeElapsed = 0, timer;
         let selectedButtons = [], lastScores = [0, 0, 0];
+        
+        function playSound(soundId) {
+            document.getElementById(soundId).play();
+        }
         
         function startGame() {
             document.getElementById("startScreen").style.display = "none";
@@ -97,9 +105,11 @@
 
         function compareNumbers() {
             if (selectedButtons[0].innerText === selectedButtons[1].innerText) {
+                playSound("correctSound");
                 selectedButtons.forEach(btn => btn.classList.add("matched"));
                 score += 10;
             } else {
+                playSound("wrongSound");
                 setTimeout(() => {
                     selectedButtons.forEach(btn => {
                         btn.classList.remove("selected");
@@ -108,6 +118,7 @@
                 }, 300);
                 lives--;
                 if (lives === 0) {
+                    playSound("gameOverSound");
                     alert("Game Over!");
                     resetGame();
                     return;
@@ -126,17 +137,6 @@
             document.getElementById("score").innerText = score;
             document.getElementById("lives").innerText = lives;
             document.getElementById("level").innerText = level;
-        }
-
-        function resetGame() {
-            lastScores.push(score);
-            lastScores = lastScores.slice(-3);
-            document.getElementById("lastScores").innerText = "Last Scores: " + lastScores.join(", ");
-            score = 0; lives = 10; level = 1;
-            updateInfo();
-            document.getElementById("startScreen").style.display = "block";
-            document.getElementById("gameScreen").style.display = "none";
-            clearInterval(timer);
         }
     </script>
 </body>
