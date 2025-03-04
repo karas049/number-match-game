@@ -42,7 +42,7 @@
     <div id="startScreen">
         <h1>Number Match Game</h1>
         <button class="btn-modern" onclick="startGame()">Start Game</button>
-        <p id="lastScores">Last Scores: 0, 0, 0</p>
+        <p>Version 0.0.1 | Created by Hitujino</p>
     </div>
 
     <div id="gameScreen">
@@ -55,7 +55,7 @@
 
     <script>
         let score = 0, lives = 10, level = 1, timeElapsed = 0, timer;
-        let selectedButtons = [], lastScores = [0, 0, 0];
+        let selectedButtons = [];
         
         function playSound(soundId) {
             document.getElementById(soundId).play();
