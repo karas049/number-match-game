@@ -32,3 +32,8 @@ This project is open-source and available under the MIT License.
 - https://pixabay.com/sound-effects/search/correct/
 - https://pixabay.com/sound-effects/search/fail/
 - https://howlingindicator.net/clear/
+
+- ![image](https://github.com/user-attachments/assets/32932f9f-661b-4dd6-b7c2-1870d4a53126)
+- ![image](https://github.com/user-attachments/assets/447d1d14-946b-400a-8a86-d93e7ee87711)
+
+
