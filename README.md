@@ -24,8 +24,9 @@ To run the game:
 2. Alternatively, deploy it using GitHub Pages
 
 
-## 📜 License
-This project is open-source and available under the MIT License.
+## Creation Information
+
+This project was created solely using VScode's Copilot chat GPT-4o.
 
 ## sound Effects
 - https://pixabay.com/sound-effects/search/game-over/
